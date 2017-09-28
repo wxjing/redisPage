@@ -1,37 +1,34 @@
-## Welcome to GitHub Pages
-
-You can use the [editor on GitHub](https://github.com/wxjing/redisPage/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
 ```
+public function index(){
+        $RedisPage = new RedisDynamicSave('','','','1');
+        $RedisPage->prefix = 'test';
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
-### Jekyll Themes
+        $array = [
+            array('id'=>'1','name'=>'G','guanzhu' => '1'),
+            array('id'=>'2','name'=>'F','guanzhu' => '1'),
+            array('id'=>'3','name'=>'E','guanzhu' => '1'),
+            array('id'=>'4','name'=>'D','guanzhu' => '1'),
+            array('id'=>'5','name'=>'C','guanzhu' => '1'),
+            array('id'=>'6','name'=>'B','guanzhu' => '1'),
+            array('id'=>'7','name'=>'A','guanzhu' => '1')
+        ];
+        foreach ($array as $k=>$v){
+            $RedisPage->setSortData('id',$v['id'],$v['id']);
+            $RedisPage->setListDetail($v['id'],$v);
+            $RedisPage->setDataDetail($v['id'],$v);
+        }
+//        $RedisPage->delSortData('id','1');
+//        $RedisPage->delData('1');
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/wxjing/redisPage/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+//        $r = $RedisPage->getListDetail('1','wxjing');
+//        $r = $RedisPage->getDataDetail('1');
 
-### Support or Contact
+        // guanzhu {wxjing,2} {wxjing,3}
+        $r = $RedisPage->dynamicSave('guanzhu','wxjing','2');
+        $r = $RedisPage->getList('id',1,50,'wxjing','asc');
+//        $r = $RedisPage->delDynamicSave('b');
+        $this->ajaxReturn($r,'JSON');
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+    }
+```
